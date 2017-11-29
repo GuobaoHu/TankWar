@@ -7,10 +7,10 @@ import java.awt.Frame;
  * @date 2017年11月29日 下午9:21:28
  * @class describ:
  */
-public class BattleFiled extends Frame {
+public class TankClient extends Frame {
 
 	public static void main(String[] args) {
-		new BattleFiled().launch();
+		new TankClient().launch();
 	}
 	
 	public void launch() {
