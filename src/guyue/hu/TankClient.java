@@ -17,13 +17,12 @@ public class TankClient extends Frame {
 	public void launch() {
 		this.setBounds(200, 100, 800, 600);
 		this.setResizable(false);
+		this.setTitle("Tank War");
 		this.addWindowListener(new WindowAdapter() {
-
 			@Override
 			public void windowClosing(WindowEvent e) {
 				System.exit(0);
 			}
-			
 		});
 		this.setVisible(true);
 	}
