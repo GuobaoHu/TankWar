@@ -9,11 +9,14 @@ import java.awt.event.*;
  * @class describ:
  */
 public class TankClient extends Frame {
+	private int tankLocationX = 100;
+	private int tankLocationY = 100;
 
 	public static void main(String[] args) {
 		new TankClient().launch();
 	}
 	
+	//Æô¶¯
 	public void launch() {
 		this.setBounds(200, 100, 800, 600);
 		this.setResizable(false);
@@ -24,6 +27,34 @@ public class TankClient extends Frame {
 				System.exit(0);
 			}
 		});
+		new Thread(new TankMove()).start();
 		this.setVisible(true);
 	}
+
+	@Override
+	public void paint(Graphics g) {
+		Color defaultColor = g.getColor();
+		g.setColor(Color.DARK_GRAY);
+		g.fillOval(tankLocationX, tankLocationY, 50, 50);
+		g.setColor(defaultColor);
+	}
+	
+	private class TankMove implements Runnable {
+
+		@Override
+		public void run() {
+			try {
+				for(int i=0; i<500; i++) {
+					tankLocationX = tankLocationX + 3;
+					tankLocationY = tankLocationY + 5;
+					repaint();
+					Thread.sleep(200);
+				}
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		
+	}
+	
 }
