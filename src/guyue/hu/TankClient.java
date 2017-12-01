@@ -12,11 +12,12 @@ public class TankClient extends Frame {
 	public static final int GAME_WIDTH = 800;
 	public static final int GAME_HEIGHT = 600;
 	public static final int TANK_SIZE = 30;
-	public static final int MOVE_SPEED = 2;
+	public static final int MOVE_STEP = 2;
 	public static final int REPAINT_SPEED = 20;
 	private int tankLocationX = 100;
 	private int tankLocationY = 100;
 	private Image offScreenImage = null;
+	private Direction direction = Direction.DOWN;
 
 	public static void main(String[] args) {
 		new TankClient().launch();
@@ -33,6 +34,7 @@ public class TankClient extends Frame {
 				System.exit(0);
 			}
 		});
+		this.addKeyListener(new KeyMonitor());
 		new Thread(new TankMove()).start();
 		this.setVisible(true);
 	}
@@ -43,7 +45,8 @@ public class TankClient extends Frame {
 		g.setColor(Color.ORANGE);
 		g.fillOval(tankLocationX, tankLocationY, TANK_SIZE, TANK_SIZE);
 		g.setColor(defaultColor);
-		tankLocationX = tankLocationX + MOVE_SPEED;
+//		tankLocationX = tankLocationX + MOVE_STEP;
+		this.directionMove();
 	}
 	
 	//双缓冲解决闪烁问题
@@ -67,12 +70,29 @@ public class TankClient extends Frame {
 		g.drawImage(offScreenImage, 0, 0, null);
 	}
 
+	public void directionMove() {
+		switch(direction) {
+		case UP:
+			tankLocationY = tankLocationY - MOVE_STEP;
+			break;
+		case DOWN:
+			tankLocationY = tankLocationY + MOVE_STEP;
+			break;
+		case LEFT:
+			tankLocationX = tankLocationX - MOVE_STEP;
+			break;
+		case RIGHT:
+			tankLocationX = tankLocationX + MOVE_STEP;
+			break;
+		}
+	}
+	
 	private class TankMove implements Runnable {
 
 		@Override
 		public void run() {
 			try {
-				for(int i=0; i<500; i++) {
+				while(true) {
 					repaint();
 					Thread.sleep(REPAINT_SPEED);
 				}
@@ -83,4 +103,24 @@ public class TankClient extends Frame {
 		
 	}
 	
+	private class KeyMonitor extends KeyAdapter {
+
+		@Override
+		public void keyPressed(KeyEvent e) {
+			if(e.getKeyCode() == KeyEvent.VK_UP) {
+				direction = Direction.UP;
+			} else if(e.getKeyCode() == KeyEvent.VK_DOWN) {
+				direction = Direction.DOWN;
+			} else if(e.getKeyCode() == KeyEvent.VK_LEFT) {
+				direction = Direction.LEFT;
+			} else if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
+				direction = Direction.RIGHT;
+			}
+		}
+		
+	}
+	
+	private enum Direction {
+		UP,DOWN,LEFT,RIGHT
+	}
 }
