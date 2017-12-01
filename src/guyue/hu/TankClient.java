@@ -35,8 +35,9 @@ public class TankClient extends Frame {
 	public void paint(Graphics g) {
 		Color defaultColor = g.getColor();
 		g.setColor(Color.DARK_GRAY);
-		g.fillOval(tankLocationX, tankLocationY, 50, 50);
+		g.fillOval(tankLocationX, tankLocationY, 30, 30);
 		g.setColor(defaultColor);
+		tankLocationX = tankLocationX + 5;
 	}
 	
 	private class TankMove implements Runnable {
@@ -45,8 +46,6 @@ public class TankClient extends Frame {
 		public void run() {
 			try {
 				for(int i=0; i<500; i++) {
-					tankLocationX = tankLocationX + 3;
-					tankLocationY = tankLocationY + 5;
 					repaint();
 					Thread.sleep(200);
 				}
