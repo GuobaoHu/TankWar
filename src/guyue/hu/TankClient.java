@@ -11,13 +11,11 @@ import java.awt.event.*;
 public class TankClient extends Frame {
 	public static final int GAME_WIDTH = 800;
 	public static final int GAME_HEIGHT = 600;
-	public static final int TANK_SIZE = 30;
-	public static final int MOVE_STEP = 5;
-	public static final int REPAINT_SPEED = 20;
+	public static final int REPAINT_SPEED = 100;
 	private int tankLocationX = 100;
 	private int tankLocationY = 100;
 	private Image offScreenImage = null;
-	private Tank myTank = new Tank(tankLocationX, tankLocationY, MOVE_STEP, TANK_SIZE); 
+	private Tank myTank = new Tank(tankLocationX, tankLocationY); 
 //	private Direction direction = Direction.DOWN;
 
 	public static void main(String[] args) {
@@ -105,16 +103,12 @@ public class TankClient extends Frame {
 
 		@Override
 		public void keyPressed(KeyEvent e) {
-			myTank.move(e);
-			/*if(e.getKeyCode() == KeyEvent.VK_UP) {
-				direction = Direction.UP;
-			} else if(e.getKeyCode() == KeyEvent.VK_DOWN) {
-				direction = Direction.DOWN;
-			} else if(e.getKeyCode() == KeyEvent.VK_LEFT) {
-				direction = Direction.LEFT;
-			} else if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
-				direction = Direction.RIGHT;
-			}*/
+			myTank.keyPressed(e);
+		}
+
+		@Override
+		public void keyReleased(KeyEvent e) {
+			myTank.keyReleased(e);
 		}
 		
 	}
