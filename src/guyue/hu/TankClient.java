@@ -12,12 +12,12 @@ public class TankClient extends Frame {
 	public static final int GAME_WIDTH = 800;
 	public static final int GAME_HEIGHT = 600;
 	public static final int TANK_SIZE = 30;
-	public static final int MOVE_STEP = 2;
+	public static final int MOVE_STEP = 5;
 	public static final int REPAINT_SPEED = 20;
 	private int tankLocationX = 100;
 	private int tankLocationY = 100;
 	private Image offScreenImage = null;
-	private Direction direction = Direction.DOWN;
+//	private Direction direction = Direction.DOWN;
 
 	public static void main(String[] args) {
 		new TankClient().launch();
@@ -46,7 +46,7 @@ public class TankClient extends Frame {
 		g.fillOval(tankLocationX, tankLocationY, TANK_SIZE, TANK_SIZE);
 		g.setColor(defaultColor);
 //		tankLocationX = tankLocationX + MOVE_STEP;
-		this.directionMove();
+//		this.directionMove();
 	}
 	
 	//双缓冲解决闪烁问题
@@ -70,7 +70,8 @@ public class TankClient extends Frame {
 		g.drawImage(offScreenImage, 0, 0, null);
 	}
 
-	public void directionMove() {
+	//连续移动相关代码，贪食蛇可以参考该写法
+	/*public void directionMove() {
 		switch(direction) {
 		case UP:
 			tankLocationY = tankLocationY - MOVE_STEP;
@@ -85,7 +86,7 @@ public class TankClient extends Frame {
 			tankLocationX = tankLocationX + MOVE_STEP;
 			break;
 		}
-	}
+	}*/
 	
 	private class TankMove implements Runnable {
 
@@ -107,7 +108,22 @@ public class TankClient extends Frame {
 
 		@Override
 		public void keyPressed(KeyEvent e) {
-			if(e.getKeyCode() == KeyEvent.VK_UP) {
+			int keyValue = e.getKeyCode();
+			switch(keyValue) {
+			case KeyEvent.VK_UP :
+				tankLocationY -= MOVE_STEP;
+				break;
+			case KeyEvent.VK_DOWN :
+				tankLocationY += MOVE_STEP;
+				break;
+			case KeyEvent.VK_LEFT :
+				tankLocationX -= MOVE_STEP;
+				break;
+			case KeyEvent.VK_RIGHT :
+				tankLocationX += MOVE_STEP;
+				break;
+			}
+			/*if(e.getKeyCode() == KeyEvent.VK_UP) {
 				direction = Direction.UP;
 			} else if(e.getKeyCode() == KeyEvent.VK_DOWN) {
 				direction = Direction.DOWN;
@@ -115,12 +131,13 @@ public class TankClient extends Frame {
 				direction = Direction.LEFT;
 			} else if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
 				direction = Direction.RIGHT;
-			}
+			}*/
 		}
 		
 	}
 	
-	private enum Direction {
+	//连续移动相关代码
+	/*private enum Direction {
 		UP,DOWN,LEFT,RIGHT
-	}
+	}*/
 }
