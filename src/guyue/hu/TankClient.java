@@ -17,6 +17,7 @@ public class TankClient extends Frame {
 	private int tankLocationX = 100;
 	private int tankLocationY = 100;
 	private Image offScreenImage = null;
+	private Tank myTank = new Tank(tankLocationX, tankLocationY, MOVE_STEP, TANK_SIZE); 
 //	private Direction direction = Direction.DOWN;
 
 	public static void main(String[] args) {
@@ -41,11 +42,7 @@ public class TankClient extends Frame {
 
 	@Override
 	public void paint(Graphics g) {
-		Color defaultColor = g.getColor();
-		g.setColor(Color.ORANGE);
-		g.fillOval(tankLocationX, tankLocationY, TANK_SIZE, TANK_SIZE);
-		g.setColor(defaultColor);
-//		tankLocationX = tankLocationX + MOVE_STEP;
+		myTank.draw(g);
 //		this.directionMove();
 	}
 	
@@ -108,21 +105,7 @@ public class TankClient extends Frame {
 
 		@Override
 		public void keyPressed(KeyEvent e) {
-			int keyValue = e.getKeyCode();
-			switch(keyValue) {
-			case KeyEvent.VK_UP :
-				tankLocationY -= MOVE_STEP;
-				break;
-			case KeyEvent.VK_DOWN :
-				tankLocationY += MOVE_STEP;
-				break;
-			case KeyEvent.VK_LEFT :
-				tankLocationX -= MOVE_STEP;
-				break;
-			case KeyEvent.VK_RIGHT :
-				tankLocationX += MOVE_STEP;
-				break;
-			}
+			myTank.move(e);
 			/*if(e.getKeyCode() == KeyEvent.VK_UP) {
 				direction = Direction.UP;
 			} else if(e.getKeyCode() == KeyEvent.VK_DOWN) {
