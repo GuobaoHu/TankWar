@@ -16,8 +16,8 @@ public class TankClient extends Frame {
 	private int tankLocationY = 100;
 	private Image offScreenImage = null;
 	private Tank myTank = new Tank(tankLocationX, tankLocationY); 
-//	private Direction direction = Direction.DOWN;
-
+	private Bullet bullet = new Bullet(tankLocationX, tankLocationY, Tank.Direction.D);
+	
 	public static void main(String[] args) {
 		new TankClient().launch();
 	}
@@ -40,6 +40,7 @@ public class TankClient extends Frame {
 
 	@Override
 	public void paint(Graphics g) {
+		bullet.draw(g);
 		myTank.draw(g);
 //		this.directionMove();
 	}
