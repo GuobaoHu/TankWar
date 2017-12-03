@@ -2,6 +2,7 @@ package guyue.hu;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.*;
 
 /**
  * @author guyue
@@ -16,18 +17,18 @@ public class TankClient extends Frame {
 	private int tankLocationY = 100;
 	private Image offScreenImage = null;
 	private Tank myTank = new Tank(tankLocationX, tankLocationY, this); 
-	private Bullet bullet = null;
+	private java.util.List<Bullet> bullets = new ArrayList<Bullet>();
 	
 	public static void main(String[] args) {
 		new TankClient().launch();
 	}
 	
-	public Bullet getBullet() {
-		return bullet;
+	public java.util.List<Bullet> getBullets() {
+		return bullets;
 	}
 
-	public void setBullet(Bullet bullet) {
-		this.bullet = bullet;
+	public void setBullet(java.util.List<Bullet> bullets) {
+		this.bullets = bullets;
 	}
 
 	//Æô¶¯
@@ -48,8 +49,8 @@ public class TankClient extends Frame {
 
 	@Override
 	public void paint(Graphics g) {
-		if(bullet != null) {
-			bullet.draw(g);
+		for(int i=0; i<bullets.size(); i++) {
+			bullets.get(i).draw(g);
 		}
 		myTank.draw(g);
 //		this.directionMove();
