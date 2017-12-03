@@ -29,7 +29,7 @@ public class Tank {
 	public void fire() {
 		int x = tankLocationX + TANK_SIZE/2 - Bullet.SIZE/2;
 		int y = tankLocationY + TANK_SIZE/2 - Bullet.SIZE/2;
-		Bullet b = new Bullet(x, y, ptDirection);
+		Bullet b = new Bullet(x, y, ptDirection, this.tc);
 		tc.getBullets().add(b);
 	}
 	
