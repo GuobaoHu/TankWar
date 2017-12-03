@@ -12,10 +12,24 @@ public class Tank {
 	private int tankLocationY;
 	private Direction direction = Direction.STOP;
 	private boolean bU=false, bD=false, bL=false, bR=false;//上下左右4个按键是否按下的flag标记
+	private TankClient tc = null;
 	
 	public Tank(int tankLocationX, int tankLocationY) {
 		this.tankLocationX = tankLocationX;
 		this.tankLocationY = tankLocationY;
+	}
+	
+	public Tank(int tankLocationX, int tankLocationY, TankClient tc) {
+		this(tankLocationX, tankLocationY);
+		this.tc = tc;
+	}
+
+	//坦克开火
+	public Bullet fire() {
+		int x = tankLocationX + TANK_SIZE/2 - Bullet.SIZE/2;
+		int y = tankLocationY + TANK_SIZE/2 - Bullet.SIZE/2;
+		Bullet b = new Bullet(x, y, direction);
+		return b;
 	}
 	
 	//画出坦克自身
@@ -31,6 +45,9 @@ public class Tank {
 	public void keyPressed(KeyEvent e) {
 		int keyValue = e.getKeyCode();
 		switch(keyValue) {
+		case KeyEvent.VK_1 :
+			tc.setBullet(fire());
+			break;
 		case KeyEvent.VK_UP :
 			bU = true;
 			break;

@@ -15,13 +15,21 @@ public class TankClient extends Frame {
 	private int tankLocationX = 100;
 	private int tankLocationY = 100;
 	private Image offScreenImage = null;
-	private Tank myTank = new Tank(tankLocationX, tankLocationY); 
-	private Bullet bullet = new Bullet(tankLocationX, tankLocationY, Tank.Direction.D);
+	private Tank myTank = new Tank(tankLocationX, tankLocationY, this); 
+	private Bullet bullet = null;
 	
 	public static void main(String[] args) {
 		new TankClient().launch();
 	}
 	
+	public Bullet getBullet() {
+		return bullet;
+	}
+
+	public void setBullet(Bullet bullet) {
+		this.bullet = bullet;
+	}
+
 	//启动
 	public void launch() {
 		this.setBounds(200, 100, GAME_WIDTH, GAME_HEIGHT);
@@ -40,7 +48,9 @@ public class TankClient extends Frame {
 
 	@Override
 	public void paint(Graphics g) {
-		bullet.draw(g);
+		if(bullet != null) {
+			bullet.draw(g);
+		}
 		myTank.draw(g);
 //		this.directionMove();
 	}
@@ -66,24 +76,6 @@ public class TankClient extends Frame {
 		g.drawImage(offScreenImage, 0, 0, null);
 	}
 
-	//连续移动相关代码，贪食蛇可以参考该写法
-	/*public void directionMove() {
-		switch(direction) {
-		case UP:
-			tankLocationY = tankLocationY - MOVE_STEP;
-			break;
-		case DOWN:
-			tankLocationY = tankLocationY + MOVE_STEP;
-			break;
-		case LEFT:
-			tankLocationX = tankLocationX - MOVE_STEP;
-			break;
-		case RIGHT:
-			tankLocationX = tankLocationX + MOVE_STEP;
-			break;
-		}
-	}*/
-	
 	private class TankMove implements Runnable {
 
 		@Override
