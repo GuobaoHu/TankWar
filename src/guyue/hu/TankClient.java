@@ -49,6 +49,7 @@ public class TankClient extends Frame {
 
 	@Override
 	public void paint(Graphics g) {
+		g.drawString("bullets:" + bullets.size(), 10, 40);
 		for(int i=0; i<bullets.size(); i++) {
 			bullets.get(i).draw(g);
 		}

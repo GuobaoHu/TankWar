@@ -47,9 +47,6 @@ public class Tank {
 	public void keyPressed(KeyEvent e) {
 		int keyValue = e.getKeyCode();
 		switch(keyValue) {
-		case KeyEvent.VK_1 :
-			this.fire();
-			break;
 		case KeyEvent.VK_UP :
 			bU = true;
 			break;
@@ -70,6 +67,9 @@ public class Tank {
 	public void keyReleased(KeyEvent e) {
 		int keyValue = e.getKeyCode();
 		switch (keyValue) {
+		case KeyEvent.VK_1 :
+			this.fire();
+			break;
 		case KeyEvent.VK_UP:
 			bU = false;
 			break;
