@@ -151,7 +151,7 @@ public class Tank {
 		
 		if(tankLocationX < 0) tankLocationX = 0;
 		if(tankLocationX > TankClient.GAME_WIDTH - Tank.TANK_SIZE) tankLocationX = TankClient.GAME_WIDTH - Tank.TANK_SIZE;
-		if(tankLocationY < 0) tankLocationY = 0;
+		if(tankLocationY < 30) tankLocationY = 30;
 		if(tankLocationY > TankClient.GAME_HEIGHT - Tank.TANK_SIZE) tankLocationY = TankClient.GAME_HEIGHT - Tank.TANK_SIZE;
 		/*下面给ptDirection赋值的代码加在move()方法里面的原因：
 		1.move方法不是在主线程调用，是在重画线程里面调用
