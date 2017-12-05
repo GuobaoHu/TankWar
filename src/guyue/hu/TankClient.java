@@ -19,6 +19,7 @@ public class TankClient extends Frame {
 	private Tank myTank = new Tank(tankLocationX, tankLocationY, this); 
 	private Tank enemyTank = new Tank(200, 300, this);
 	private java.util.List<Bullet> bullets = new ArrayList<Bullet>();
+	private Boom boom = new Boom(300, 300, this);
 	
 	public static void main(String[] args) {
 		new TankClient().launch();
@@ -59,6 +60,7 @@ public class TankClient extends Frame {
 		}
 		myTank.draw(g);
 		enemyTank.draw(g);
+		boom.draw(g);
 //		this.directionMove();
 	}
 	
