@@ -14,7 +14,16 @@ public class Tank {
 	private Direction ptDirection = Direction.D; //炮筒方向
 	private boolean bU=false, bD=false, bL=false, bR=false;//上下左右4个按键是否按下的flag标记
 	private TankClient tc = null;
+	private boolean live = true;
 	
+	public boolean isLive() {
+		return live;
+	}
+
+	public void setLive(boolean live) {
+		this.live = live;
+	}
+
 	public Tank(int tankLocationX, int tankLocationY) {
 		this.tankLocationX = tankLocationX;
 		this.tankLocationY = tankLocationY;
@@ -35,12 +44,14 @@ public class Tank {
 	
 	//画出坦克自身
 	public void draw(Graphics g) {
-		Color defaultColor = g.getColor();
-		g.setColor(Color.ORANGE);
-		g.fillOval(tankLocationX, tankLocationY, TANK_SIZE, TANK_SIZE);
-		g.setColor(defaultColor);
-		this.drawPT(g);
-		this.move();
+		if(this.isLive()) {
+			Color defaultColor = g.getColor();
+			g.setColor(Color.ORANGE);
+			g.fillOval(tankLocationX, tankLocationY, TANK_SIZE, TANK_SIZE);
+			g.setColor(defaultColor);
+			this.drawPT(g);
+			this.move();
+		}
 	}
 	
 	//按键按下
@@ -193,4 +204,11 @@ public class Tank {
 			break;
 		}
 	}
+	
+	//获取Tank的外包裹矩形
+	public Rectangle getRect() {
+		return new Rectangle(tankLocationX, tankLocationY, TANK_SIZE, TANK_SIZE);
+	}
+	
+	
 }

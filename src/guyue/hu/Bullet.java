@@ -70,4 +70,19 @@ public class Bullet {
 			this.tc.getBullets().remove(this);
 		}
 	}
+	
+	//获取子弹的外包裹矩形
+	public Rectangle getRect() {
+		return new Rectangle(locationX, locationY, SIZE, SIZE);
+	}
+	
+	//检查子弹是否击中Tank
+	public boolean hitTank(Tank t) {
+		if(this.getRect().intersects(t.getRect()) && t.isLive()) {
+			t.setLive(false);
+			tc.getBullets().remove(this);
+			return true;
+		}
+		return false;
+	}
 }

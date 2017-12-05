@@ -17,6 +17,7 @@ public class TankClient extends Frame {
 	private int tankLocationY = 100;
 	private Image offScreenImage = null;
 	private Tank myTank = new Tank(tankLocationX, tankLocationY, this); 
+	private Tank enemyTank = new Tank(200, 300, this);
 	private java.util.List<Bullet> bullets = new ArrayList<Bullet>();
 	
 	public static void main(String[] args) {
@@ -51,9 +52,13 @@ public class TankClient extends Frame {
 	public void paint(Graphics g) {
 		g.drawString("bullets:" + bullets.size(), 10, 40);
 		for(int i=0; i<bullets.size(); i++) {
-			bullets.get(i).draw(g);
+			Bullet b = bullets.get(i);
+			if(!b.hitTank(enemyTank)) {
+				bullets.get(i).draw(g);
+			}
 		}
 		myTank.draw(g);
+		enemyTank.draw(g);
 //		this.directionMove();
 	}
 	
