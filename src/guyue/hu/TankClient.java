@@ -3,6 +3,7 @@ package guyue.hu;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import java.util.List;
 
 /**
  * @author guyue
@@ -18,8 +19,8 @@ public class TankClient extends Frame {
 	private Image offScreenImage = null;
 	private Tank myTank = new Tank(tankLocationX, tankLocationY, this); 
 	private Tank enemyTank = new Tank(200, 300, this);
-	private java.util.List<Bullet> bullets = new ArrayList<Bullet>();
-	private Boom boom = new Boom(300, 300, this);
+	private List<Bullet> bullets = new ArrayList<Bullet>();
+	private List<Boom> booms = new ArrayList<Boom>();
 	
 	public static void main(String[] args) {
 		new TankClient().launch();
@@ -29,8 +30,8 @@ public class TankClient extends Frame {
 		return bullets;
 	}
 
-	public void setBullet(java.util.List<Bullet> bullets) {
-		this.bullets = bullets;
+	public List<Boom> getBooms() {
+		return booms;
 	}
 
 	//Æô¶¯
@@ -52,15 +53,21 @@ public class TankClient extends Frame {
 	@Override
 	public void paint(Graphics g) {
 		g.drawString("bullets:" + bullets.size(), 10, 40);
+		g.drawString("booms count:" + booms.size(), 10, 60);
+		
 		for(int i=0; i<bullets.size(); i++) {
 			Bullet b = bullets.get(i);
 			if(!b.hitTank(enemyTank)) {
 				bullets.get(i).draw(g);
 			}
 		}
+		
+		for(int i=0; i<booms.size(); i++) {
+			Boom boom = booms.get(i);
+			boom.draw(g);
+		}
 		myTank.draw(g);
 		enemyTank.draw(g);
-		boom.draw(g);
 //		this.directionMove();
 	}
 	

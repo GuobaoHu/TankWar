@@ -18,7 +18,10 @@ public class Boom {
 	
 	//»­³ö±¬Õ¨¹ý³Ì
 	public void draw(Graphics g) {
-		if(!live) return;
+		if(!live) {
+			tc.getBooms().remove(this);
+			return;
+		}
 		Color c = g.getColor();
 		g.setColor(Color.RED);
 		g.fillOval(x, y, diameters[step], diameters[step]);
