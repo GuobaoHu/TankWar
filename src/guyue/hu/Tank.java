@@ -16,6 +16,7 @@ public class Tank {
 	private TankClient tc = null;
 	private boolean live = true;
 	private boolean good = true;
+	private boolean xL = false, xR = false, yU = false, yD = false;
 	
 	public boolean isLive() {
 		return live;
@@ -51,12 +52,53 @@ public class Tank {
 			if(good) {
 				g.setColor(Color.ORANGE);
 			} else {
-				g.setColor(Color.BLACK);
+				g.setColor(Color.BLUE);
 			}
 			g.fillOval(tankLocationX, tankLocationY, TANK_SIZE, TANK_SIZE);
 			g.setColor(defaultColor);
 			this.drawPT(g);
-			this.move();
+			if(good) {
+				this.move();
+			} else {
+				this.enemyMove();
+			}
+		}
+	}
+	
+	//敌方坦克移动策略
+	public void enemyMove() {
+		if(!xL && !xR) {
+			tankLocationX += 2;
+		} else if(xL) {
+			tankLocationX += 2;
+		} else if(xR) {
+			tankLocationX -= 2;
+		}
+		if(!yU && !yD) {
+			tankLocationY -= 2;
+		} else if(yU) {
+			tankLocationY += 2;
+		} else if(yD) {
+			tankLocationY -= 2;
+		}
+		this.enemyDirection();
+	}
+	
+	//敌方坦克移动判定策略
+	public void enemyDirection() {
+		if(tankLocationX < 0) {
+			xL = true;
+			xR = false;
+		} else if(tankLocationX > TankClient.GAME_WIDTH - Tank.TANK_SIZE) {
+			xL = false;
+			xR = true;
+		}
+		if(tankLocationY < 30) {
+			yU = true;
+			yD = false;
+		} else if(tankLocationY > TankClient.GAME_HEIGHT - Tank.TANK_SIZE) {
+			yU = false;
+			yD = true;
 		}
 	}
 	

@@ -54,7 +54,7 @@ public class TankClient extends Frame {
 	//Ìí¼ÓµĞ·½Tank
 	public void addEnemy() {
 		for(int i=0; i<10; i++) {
-			enemyTanks.add(new Tank(50 + 50 * i, 500, false, this));
+			enemyTanks.add(new Tank(50 + 50 * i, 50 + 30 * i, false, this));
 		}
 	}
 	
