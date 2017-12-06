@@ -15,6 +15,7 @@ public class Tank {
 	private boolean bU=false, bD=false, bL=false, bR=false;//上下左右4个按键是否按下的flag标记
 	private TankClient tc = null;
 	private boolean live = true;
+	private boolean good = true;
 	
 	public boolean isLive() {
 		return live;
@@ -29,8 +30,9 @@ public class Tank {
 		this.tankLocationY = tankLocationY;
 	}
 	
-	public Tank(int tankLocationX, int tankLocationY, TankClient tc) {
+	public Tank(int tankLocationX, int tankLocationY, boolean good, TankClient tc) {
 		this(tankLocationX, tankLocationY);
+		this.good = good;
 		this.tc = tc;
 	}
 
@@ -46,7 +48,11 @@ public class Tank {
 	public void draw(Graphics g) {
 		if(this.isLive()) {
 			Color defaultColor = g.getColor();
-			g.setColor(Color.ORANGE);
+			if(good) {
+				g.setColor(Color.ORANGE);
+			} else {
+				g.setColor(Color.BLACK);
+			}
 			g.fillOval(tankLocationX, tankLocationY, TANK_SIZE, TANK_SIZE);
 			g.setColor(defaultColor);
 			this.drawPT(g);

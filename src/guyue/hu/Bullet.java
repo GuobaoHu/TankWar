@@ -2,6 +2,7 @@ package guyue.hu;
 
 import java.awt.*;
 import guyue.hu.Tank.Direction;
+import java.util.List;
 
 public class Bullet {
 	public static final int SIZE = 10;
@@ -83,6 +84,16 @@ public class Bullet {
 			tc.getBooms().add(new Boom(locationX, locationY, tc));
 			tc.getBullets().remove(this);
 			return true;
+		}
+		return false;
+	}
+	
+	public boolean hitTanks(List<Tank> tanks) {
+		for(int i=0; i<tanks.size(); i++) {
+			Tank tank = tanks.get(i);
+			if(this.hitTank(tank)) {
+				return true;
+			}
 		}
 		return false;
 	}

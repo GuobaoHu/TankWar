@@ -17,8 +17,8 @@ public class TankClient extends Frame {
 	private int tankLocationX = 100;
 	private int tankLocationY = 100;
 	private Image offScreenImage = null;
-	private Tank myTank = new Tank(tankLocationX, tankLocationY, this); 
-	private Tank enemyTank = new Tank(200, 300, this);
+	private Tank myTank = new Tank(tankLocationX, tankLocationY, true, this); 
+	private List<Tank> enemyTanks = new ArrayList<Tank>();
 	private List<Bullet> bullets = new ArrayList<Bullet>();
 	private List<Boom> booms = new ArrayList<Boom>();
 	
@@ -47,9 +47,17 @@ public class TankClient extends Frame {
 		});
 		this.addKeyListener(new KeyMonitor());
 		new Thread(new TankMove()).start();
+		this.addEnemy();
 		this.setVisible(true);
 	}
 
+	//Ìí¼ÓµÐ·½Tank
+	public void addEnemy() {
+		for(int i=0; i<10; i++) {
+			enemyTanks.add(new Tank(50 + 50 * i, 500, false, this));
+		}
+	}
+	
 	@Override
 	public void paint(Graphics g) {
 		g.drawString("bullets:" + bullets.size(), 10, 40);
@@ -57,7 +65,7 @@ public class TankClient extends Frame {
 		
 		for(int i=0; i<bullets.size(); i++) {
 			Bullet b = bullets.get(i);
-			if(!b.hitTank(enemyTank)) {
+			if(!b.hitTanks(enemyTanks)) {
 				bullets.get(i).draw(g);
 			}
 		}
@@ -67,7 +75,9 @@ public class TankClient extends Frame {
 			boom.draw(g);
 		}
 		myTank.draw(g);
-		enemyTank.draw(g);
+		for(int i=0; i<enemyTanks.size(); i++) {
+			enemyTanks.get(i).draw(g);
+		}
 //		this.directionMove();
 	}
 	
