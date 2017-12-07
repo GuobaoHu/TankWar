@@ -138,9 +138,4 @@ public class TankClient extends Frame {
 		}
 		
 	}
-	
-	//连续移动相关代码
-	/*private enum Direction {
-		UP,DOWN,LEFT,RIGHT
-	}*/
 }
