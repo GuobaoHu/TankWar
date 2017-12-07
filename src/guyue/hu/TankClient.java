@@ -14,7 +14,7 @@ public class TankClient extends Frame {
 	public static final int GAME_WIDTH = 800;
 	public static final int GAME_HEIGHT = 600;
 	public static final int REPAINT_SPEED = 100;
-	private int tankLocationX = 100;
+	private int tankLocationX = 500;
 	private int tankLocationY = 100;
 	private Image offScreenImage = null;
 	private Tank myTank = new Tank(tankLocationX, tankLocationY, true, this); 
@@ -24,7 +24,7 @@ public class TankClient extends Frame {
 	private static Random random = new Random();
 	private Wall w1 = new Wall(100, 300, 50, 200, this);
 	private Wall w2 = new Wall(400, 400, 200, 50, this);
-	
+	private Food food = new Food(110, 100, 15, 15, this);
 	
 	public static void main(String[] args) {
 		new TankClient().launch();
@@ -86,6 +86,8 @@ public class TankClient extends Frame {
 			boom.draw(g);
 		}
 		myTank.draw(g);
+		food.draw(g);
+		myTank.eatFood(food);
 		w1.draw(g);
 		w2.draw(g);
 		for(int i=0; i<enemyTanks.size(); i++) {

@@ -102,6 +102,12 @@ public class Tank {
 	public void keyPressed(KeyEvent e) {
 		int keyValue = e.getKeyCode();
 		switch(keyValue) {
+		case KeyEvent.VK_F2 :
+			if(!live) {
+				live = true;
+				life = 100;
+			}
+			break;
 		case KeyEvent.VK_UP :
 			bU = true;
 			break;
@@ -301,12 +307,22 @@ public class Tank {
 		return false;
 	}
 	
+	//吃食物
+	public boolean eatFood(Food food) {
+		if(good && live && food.isLive() && this.getRect().intersects(food.getRect())) {
+			food.setLive(false);
+			life = 100;
+			return true;
+		}
+		return false;
+	}
+	
 	//增加坦克的血条
 	private class BloodBar {
 		public void draw(Graphics g) {
 			Color c = g.getColor();
 			g.setColor(Color.GREEN);
-			g.drawRect(tankLocationX, tankLocationY-20, TANK_SIZE, 10);
+			g.drawRect(tankLocationX, tankLocationY-15, TANK_SIZE, 10);
 			int width = TANK_SIZE * life/100;
 			if(life > 50) {
 				g.setColor(Color.GREEN);
@@ -315,7 +331,7 @@ public class Tank {
 			} else {
 				g.setColor(Color.RED);
 			}
-			g.fillRect(tankLocationX, tankLocationY-20, width, 10);
+			g.fillRect(tankLocationX, tankLocationY-15, width, 10);
 			g.setColor(c);
 		}
 	}

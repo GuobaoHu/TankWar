@@ -10,7 +10,6 @@ public class Boom {
 	private int step = 0;
 	
 	public Boom(int x, int y, TankClient tc) {
-		super();
 		this.x = x;
 		this.y = y;
 		this.tc = tc;
