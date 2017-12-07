@@ -19,6 +19,7 @@ public class Tank {
 	private boolean good = true;
 	private static Random random = new Random();//随机数产生器，这种比Math类里面的要好，可以产生int类型
 	private int step = 5 + random.nextInt(15);
+	private int oldX, oldY;
 	
 	public boolean isGood() {
 		return good;
@@ -35,6 +36,8 @@ public class Tank {
 	public Tank(int tankLocationX, int tankLocationY) {
 		this.tankLocationX = tankLocationX;
 		this.tankLocationY = tankLocationY;
+		this.oldX = tankLocationX;
+		this.oldY = tankLocationY;
 	}
 	
 	public Tank(int tankLocationX, int tankLocationY, boolean good, TankClient tc) {
@@ -140,6 +143,8 @@ public class Tank {
 	
 	//8个方向的移动
 	public void move() {
+		oldX = tankLocationX;
+		oldY = tankLocationY;
 		switch(direction) {
 		case U :
 			tankLocationY -= Y_STEP;
@@ -236,5 +241,18 @@ public class Tank {
 		return new Rectangle(tankLocationX, tankLocationY, TANK_SIZE, TANK_SIZE);
 	}
 	
+	//与墙相撞时回到上一步的位置
+	public void stay() {
+		tankLocationX = oldX;
+		tankLocationY = oldY;
+	}
 	
+	//检查是否与墙相撞
+	public boolean hitWall(Wall w) {
+		if(this.getRect().intersects(w.getRect())) {
+			this.stay();
+			return true;
+		}
+		return false;
+	}
 }

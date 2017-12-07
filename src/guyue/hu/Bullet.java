@@ -88,6 +88,15 @@ public class Bullet {
 		return new Rectangle(locationX, locationY, SIZE, SIZE);
 	}
 	
+	//检查子弹撞墙的问题
+	public boolean hitWall(Wall w) {
+		if(this.getRect().intersects(w.getRect())) {
+			tc.getBullets().remove(this);
+			return true;
+		}
+		return false;
+	}
+	
 	//检查子弹是否击中Tank
 	public boolean hitTank(Tank t) {
 		if(this.getRect().intersects(t.getRect()) && t.isLive() && (this.good != t.isGood())) {

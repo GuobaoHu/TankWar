@@ -22,6 +22,9 @@ public class TankClient extends Frame {
 	private List<Bullet> bullets = new ArrayList<Bullet>();
 	private List<Boom> booms = new ArrayList<Boom>();
 	private static Random random = new Random();
+	private Wall w1 = new Wall(100, 300, 50, 200, this);
+	private Wall w2 = new Wall(400, 400, 200, 50, this);
+	
 	
 	public static void main(String[] args) {
 		new TankClient().launch();
@@ -72,7 +75,7 @@ public class TankClient extends Frame {
 		
 		for(int i=0; i<bullets.size(); i++) {
 			Bullet b = bullets.get(i);
-			if(!b.hitTanks(enemyTanks) && !b.hitTank(myTank)) {
+			if(!b.hitTanks(enemyTanks) && !b.hitTank(myTank) && !b.hitWall(w1) && !b.hitWall(w2)) {
 				bullets.get(i).draw(g);
 			}
 		}
@@ -82,10 +85,14 @@ public class TankClient extends Frame {
 			boom.draw(g);
 		}
 		myTank.draw(g);
+		w1.draw(g);
+		w2.draw(g);
 		for(int i=0; i<enemyTanks.size(); i++) {
-			enemyTanks.get(i).draw(g);
+			Tank enemyTank = enemyTanks.get(i);
+			enemyTank.hitWall(w1);
+			enemyTank.hitWall(w2);
+			enemyTank.draw(g);
 		}
-//		this.directionMove();
 	}
 	
 	//双缓冲解决闪烁问题
