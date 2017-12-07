@@ -72,6 +72,7 @@ public class TankClient extends Frame {
 		g.drawString("booms count:" + booms.size(), 10, 60);
 		g.drawString("enemys count:" + enemyTanks.size(), 100, 40);
 		g.drawString("kills count:" + Bullet.getKill(), 100, 60);
+		g.drawString("My tank life:" + myTank.getLife(), 10, 80);
 		
 		for(int i=0; i<bullets.size(); i++) {
 			Bullet b = bullets.get(i);

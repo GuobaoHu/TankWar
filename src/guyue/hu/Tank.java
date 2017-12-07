@@ -20,7 +20,16 @@ public class Tank {
 	private static Random random = new Random();//随机数产生器，这种比Math类里面的要好，可以产生int类型
 	private int step = 5 + random.nextInt(15);
 	private int oldX, oldY;
+	private int life = 100;
 	
+	public int getLife() {
+		return life;
+	}
+
+	public void setLife(int life) {
+		this.life = life;
+	}
+
 	public boolean isGood() {
 		return good;
 	}
@@ -52,6 +61,21 @@ public class Tank {
 		int y = tankLocationY + TANK_SIZE/2 - Bullet.SIZE/2;
 		Bullet b = new Bullet(x, y, ptDirection, this.tc, good);
 		tc.getBullets().add(b);
+	}
+	
+	public void fire(Direction direction) {
+		int x = tankLocationX + TANK_SIZE/2 - Bullet.SIZE/2;
+		int y = tankLocationY + TANK_SIZE/2 - Bullet.SIZE/2;
+		Bullet b = new Bullet(x, y, direction, this.tc, good);
+		tc.getBullets().add(b);
+	}
+	
+	//坦克superFire
+	public void superFire() {
+		Direction[] directions  = Direction.values();
+		for(int i=0; i<8; i++) {
+			fire(directions[i]);
+		}
 	}
 	
 	//画出坦克自身
@@ -96,6 +120,9 @@ public class Tank {
 		switch (keyValue) {
 		case KeyEvent.VK_1 :
 			this.fire();
+			break;
+		case KeyEvent.VK_2 :
+			this.superFire();
 			break;
 		case KeyEvent.VK_UP:
 			bU = false;
