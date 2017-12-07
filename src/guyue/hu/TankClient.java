@@ -91,6 +91,7 @@ public class TankClient extends Frame {
 			Tank enemyTank = enemyTanks.get(i);
 			enemyTank.hitWall(w1);
 			enemyTank.hitWall(w2);
+			enemyTank.hitTanks(enemyTanks);
 			enemyTank.draw(g);
 		}
 	}

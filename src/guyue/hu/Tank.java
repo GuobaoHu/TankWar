@@ -255,4 +255,18 @@ public class Tank {
 		}
 		return false;
 	}
+	
+	//检查两坦克是否相撞
+	public boolean hitTanks(java.util.List<Tank> tanks) {
+		for(int i=0; i<tanks.size(); i++) {
+			Tank t = tanks.get(i);
+			if(this.live && t.isLive() && (this != t) && 
+					this.getRect().intersects(t.getRect())) {
+				this.stay();
+				t.stay();
+				return true;
+			}
+		}
+		return false;
+	}
 }
