@@ -11,21 +11,32 @@ public class Bullet {
 	private int locationX, locationY;
 	private Tank.Direction direction;
 	private TankClient tc;
+	private boolean good = true;
+	private static int kill = 0;
 	
+	public static int getKill() {
+		return kill;
+	}
+
 	public Bullet(int locationX, int locationY, Direction direction) {
 		this.locationX = locationX;
 		this.locationY = locationY;
 		this.direction = direction;
 	}
 	
-	public Bullet(int locationX, int locationY, Direction direction, TankClient tc) {
+	public Bullet(int locationX, int locationY, Direction direction, TankClient tc, boolean good) {
 		this(locationX, locationY, direction);
+		this.good = good;
 		this.tc = tc;
 	}
 
 	public void draw(Graphics g) {
 		Color c = g.getColor();
+		if(good) {
 		g.setColor(Color.RED);
+		} else {
+			g.setColor(Color.BLACK);
+		}
 		g.fillOval(locationX, locationY, SIZE, SIZE);
 		g.setColor(c);
 		this.move();
@@ -79,7 +90,7 @@ public class Bullet {
 	
 	//检查子弹是否击中Tank
 	public boolean hitTank(Tank t) {
-		if(this.getRect().intersects(t.getRect()) && t.isLive()) {
+		if(this.getRect().intersects(t.getRect()) && t.isLive() && (this.good != t.isGood())) {
 			t.setLive(false);
 			tc.getBooms().add(new Boom(locationX, locationY, tc));
 			tc.getBullets().remove(this);
@@ -92,8 +103,13 @@ public class Bullet {
 		for(int i=0; i<tanks.size(); i++) {
 			Tank tank = tanks.get(i);
 			if(this.hitTank(tank)) {
+				kill ++;
+				tanks.remove(tank);
 				return true;
 			}
+		}
+		if(tanks.size() < 6) {
+			tc.addEnemy();
 		}
 		return false;
 	}

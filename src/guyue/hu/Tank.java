@@ -2,6 +2,7 @@ package guyue.hu;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.*;
 
 public class Tank {
 	public static final int TANK_SIZE = 30;
@@ -16,7 +17,13 @@ public class Tank {
 	private TankClient tc = null;
 	private boolean live = true;
 	private boolean good = true;
+	private static Random random = new Random();//随机数产生器，这种比Math类里面的要好，可以产生int类型
+	private int step = 5 + random.nextInt(15);
 	
+	public boolean isGood() {
+		return good;
+	}
+
 	public boolean isLive() {
 		return live;
 	}
@@ -40,7 +47,7 @@ public class Tank {
 	public void fire() {
 		int x = tankLocationX + TANK_SIZE/2 - Bullet.SIZE/2;
 		int y = tankLocationY + TANK_SIZE/2 - Bullet.SIZE/2;
-		Bullet b = new Bullet(x, y, ptDirection, this.tc);
+		Bullet b = new Bullet(x, y, ptDirection, this.tc, good);
 		tc.getBullets().add(b);
 	}
 	
@@ -51,7 +58,7 @@ public class Tank {
 			if(good) {
 				g.setColor(Color.ORANGE);
 			} else {
-				g.setColor(Color.BLACK);
+				g.setColor(Color.BLUE);
 			}
 			g.fillOval(tankLocationX, tankLocationY, TANK_SIZE, TANK_SIZE);
 			g.setColor(defaultColor);
@@ -179,6 +186,19 @@ public class Tank {
 		if(direction != Direction.STOP) {
 			ptDirection = direction;
 		}
+		if(!good) {
+			Direction[] directions = Direction.values();
+			if(step == 0) {
+				step = 5 + random.nextInt(15);
+				int i = random.nextInt(directions.length);
+				direction = directions[i];
+			}
+			if(random.nextInt(12) > 8) {
+				this.fire();
+			}
+			step --;
+		}
+		
 	}
 	
 	//画炮筒

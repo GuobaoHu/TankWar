@@ -21,6 +21,7 @@ public class TankClient extends Frame {
 	private List<Tank> enemyTanks = new ArrayList<Tank>();
 	private List<Bullet> bullets = new ArrayList<Bullet>();
 	private List<Boom> booms = new ArrayList<Boom>();
+	private static Random random = new Random();
 	
 	public static void main(String[] args) {
 		new TankClient().launch();
@@ -32,6 +33,10 @@ public class TankClient extends Frame {
 
 	public List<Boom> getBooms() {
 		return booms;
+	}
+
+	public List<Tank> getEnemyTanks() {
+		return enemyTanks;
 	}
 
 	//启动
@@ -51,10 +56,10 @@ public class TankClient extends Frame {
 		this.setVisible(true);
 	}
 
-	//添加敌方Tank
+	//添加敌方Tank,添加在界面的随机位置
 	public void addEnemy() {
 		for(int i=0; i<10; i++) {
-			enemyTanks.add(new Tank(50 + 50 * i, 500, false, this));
+			enemyTanks.add(new Tank(random.nextInt(GAME_WIDTH - Tank.TANK_SIZE), 30 + random.nextInt(GAME_HEIGHT - Tank.TANK_SIZE - 30), false, this));
 		}
 	}
 	
@@ -62,10 +67,12 @@ public class TankClient extends Frame {
 	public void paint(Graphics g) {
 		g.drawString("bullets:" + bullets.size(), 10, 40);
 		g.drawString("booms count:" + booms.size(), 10, 60);
+		g.drawString("enemys count:" + enemyTanks.size(), 100, 40);
+		g.drawString("kills count:" + Bullet.getKill(), 100, 60);
 		
 		for(int i=0; i<bullets.size(); i++) {
 			Bullet b = bullets.get(i);
-			if(!b.hitTanks(enemyTanks)) {
+			if(!b.hitTanks(enemyTanks) && !b.hitTank(myTank)) {
 				bullets.get(i).draw(g);
 			}
 		}
