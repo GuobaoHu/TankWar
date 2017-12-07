@@ -21,6 +21,7 @@ public class Tank {
 	private int step = 5 + random.nextInt(15);
 	private int oldX, oldY;
 	private int life = 100;
+	private BloodBar blood = new BloodBar();
 	
 	public int getLife() {
 		return life;
@@ -90,6 +91,9 @@ public class Tank {
 			g.fillOval(tankLocationX, tankLocationY, TANK_SIZE, TANK_SIZE);
 			g.setColor(defaultColor);
 			this.drawPT(g);
+			if(good) {
+				blood.draw(g);
+			}
 			this.move();
 		}
 	}
@@ -295,5 +299,24 @@ public class Tank {
 			}
 		}
 		return false;
+	}
+	
+	//增加坦克的血条
+	private class BloodBar {
+		public void draw(Graphics g) {
+			Color c = g.getColor();
+			g.setColor(Color.GREEN);
+			g.drawRect(tankLocationX, tankLocationY-20, TANK_SIZE, 10);
+			int width = TANK_SIZE * life/100;
+			if(life > 50) {
+				g.setColor(Color.GREEN);
+			} else if(life > 20) {
+				g.setColor(Color.YELLOW);
+			} else {
+				g.setColor(Color.RED);
+			}
+			g.fillRect(tankLocationX, tankLocationY-20, width, 10);
+			g.setColor(c);
+		}
 	}
 }

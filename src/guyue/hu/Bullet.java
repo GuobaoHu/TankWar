@@ -101,7 +101,7 @@ public class Bullet {
 	public boolean hitTank(Tank t) {
 		if(this.getRect().intersects(t.getRect()) && t.isLive() && (this.good != t.isGood())) {
 			if(t.isGood()) {
-				t.setLife(t.getLife() - 20);
+				t.setLife(t.getLife() - 10);
 				if(t.getLife() <= 0) {
 					t.setLive(false);
 				}
