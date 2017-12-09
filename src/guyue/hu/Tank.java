@@ -150,11 +150,6 @@ public class Tank {
 		this.moveDirection();
 	}
 	
-	//定义坦克移动的8个方向
-	enum Direction {
-		U,D,L,R,LU,RU,LD,RD,STOP
-	}
-	
 	//根据按键是否被按下确定坦克的移动方向
 	public void moveDirection() {
 		if(bU && !bD && !bL && !bR) {

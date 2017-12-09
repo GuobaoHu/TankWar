@@ -1,7 +1,6 @@
 package guyue.hu;
 
 import java.awt.*;
-import guyue.hu.Tank.Direction;
 import java.util.List;
 
 public class Bullet {
@@ -9,7 +8,7 @@ public class Bullet {
 	public static final int X_STEP = 10;
 	public static final int Y_STEP = 10;
 	private int locationX, locationY;
-	private Tank.Direction direction;
+	private Direction direction;
 	private TankClient tc;
 	private boolean good = true;
 	private static int kill = 0;
