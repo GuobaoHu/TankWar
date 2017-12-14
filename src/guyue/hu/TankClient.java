@@ -52,16 +52,16 @@ public class TankClient extends Frame {
 		});
 		this.addKeyListener(new KeyMonitor());
 		new Thread(new TankMove()).start();
-		this.addEnemy();
+//		this.addEnemy();
 		this.setVisible(true);
 	}
 
 	//添加敌方Tank,添加在界面的随机位置
-	public void addEnemy() {
+	/*public void addEnemy() {
 		for(int i=0; i<10; i++) {
 			enemyTanks.add(new Tank(random.nextInt(GAME_WIDTH - Tank.TANK_SIZE), 30 + random.nextInt(GAME_HEIGHT - Tank.TANK_SIZE - 30), false, this));
 		}
-	}
+	}*/
 	
 	@Override
 	public void paint(Graphics g) {
