@@ -22,6 +22,7 @@ public class TankClient extends Frame {
 	private List<Bullet> bullets = new ArrayList<Bullet>();
 	private List<Boom> booms = new ArrayList<Boom>();
 	private static Random random = new Random();
+	private NetClient nc = new NetClient();
 	
 	public static void main(String[] args) {
 		new TankClient().launch();
@@ -52,6 +53,7 @@ public class TankClient extends Frame {
 		});
 		this.addKeyListener(new KeyMonitor());
 		new Thread(new TankMove()).start();
+		nc.connect("127.0.0.1", TankServer.TCP_PORT);
 //		this.addEnemy();
 		this.setVisible(true);
 	}
