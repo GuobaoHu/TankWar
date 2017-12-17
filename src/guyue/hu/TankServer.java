@@ -11,6 +11,7 @@ public class TankServer {
 	 */
 	private static int id = 100;
 	public static final int TCP_PORT = 10000;
+	public static final int UDP_PORT = 8888;
 	private List<Client> clients = new ArrayList<>();
 
 	public static void main(String[] args) {
@@ -18,6 +19,11 @@ public class TankServer {
 	}
 	
 	public void launch() {
+		//begin 专门线程处理UDP
+		new Thread(new UDPThread()).start();
+		//end
+		
+		//begin TCP连接及处理
 		ServerSocket ss = null;
 		try {
 			ss = new ServerSocket(TCP_PORT);
@@ -35,7 +41,7 @@ public class TankServer {
 				Client c = new Client(s.getInetAddress().getHostAddress(), udpPort);
 				clients.add(c);
 				DataOutputStream dos = new DataOutputStream(s.getOutputStream());
-				dos.writeInt(id ++);//此处不可能有两个线程同时访问到
+				dos.writeInt(id ++);//此处不可能有两个线程同时访问到,所以无需关心同步的问题
 			} catch (IOException e) {
 				e.printStackTrace();
 			} finally {
@@ -49,8 +55,30 @@ public class TankServer {
 				}
 			}
 		}
+		//end
 	}
 
+	private class UDPThread implements Runnable {
+		private DatagramSocket ds = null;
+		private byte[] buf = new byte[1024];
+		@Override
+		public void run() {
+			try {
+				ds = new DatagramSocket(UDP_PORT);
+				while(ds != null) {
+					DatagramPacket dp = new DatagramPacket(buf, buf.length);
+					ds.receive(dp);
+System.out.println("server has received a DatagramPacket!");
+				}
+			} catch (SocketException e) {
+				e.printStackTrace();
+			} catch(IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+	}
+	
 	private class Client {
 		private String ip;
 		private int udpPort;

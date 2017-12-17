@@ -10,8 +10,8 @@ public class Tank {
 	public static final int Y_STEP = 5;
 	
 	private int id;
-	private int tankLocationX;
-	private int tankLocationY;
+	private int x;
+	private int y;
 	private Direction direction = Direction.STOP;
 	private Direction ptDirection = Direction.D; //炮筒方向
 	private boolean bU=false, bD=false, bL=false, bR=false;//上下左右4个按键是否按下的flag标记
@@ -21,6 +21,18 @@ public class Tank {
 	private static Random random = new Random();//随机数产生器，这种比Math类里面的要好，可以产生int类型
 	private int step = 5 + random.nextInt(15);
 	
+	public Direction getDirection() {
+		return direction;
+	}
+
+	public int getX() {
+		return x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -42,8 +54,8 @@ public class Tank {
 	}
 
 	public Tank(int tankLocationX, int tankLocationY) {
-		this.tankLocationX = tankLocationX;
-		this.tankLocationY = tankLocationY;
+		this.x = tankLocationX;
+		this.y = tankLocationY;
 	}
 	
 	public Tank(int tankLocationX, int tankLocationY, boolean good, TankClient tc) {
@@ -54,8 +66,8 @@ public class Tank {
 
 	//坦克开火
 	public void fire() {
-		int x = tankLocationX + TANK_SIZE/2 - Bullet.SIZE/2;
-		int y = tankLocationY + TANK_SIZE/2 - Bullet.SIZE/2;
+		int x = this.x + TANK_SIZE/2 - Bullet.SIZE/2;
+		int y = this.y + TANK_SIZE/2 - Bullet.SIZE/2;
 		Bullet b = new Bullet(x, y, ptDirection, this.tc, good);
 		tc.getBullets().add(b);
 	}
@@ -69,9 +81,9 @@ public class Tank {
 			} else {
 				g.setColor(Color.BLUE);
 			}
-			g.fillOval(tankLocationX, tankLocationY, TANK_SIZE, TANK_SIZE);
+			g.fillOval(x, y, TANK_SIZE, TANK_SIZE);
 			g.setColor(defaultColor);
-			g.drawString("id:" + id, tankLocationX, tankLocationY - 10);
+			g.drawString("id:" + id, x, y - 10);
 			this.drawPT(g);
 			this.move();
 		}
@@ -147,41 +159,41 @@ public class Tank {
 	public void move() {
 		switch(direction) {
 		case U :
-			tankLocationY -= Y_STEP;
+			y -= Y_STEP;
 			break;
 		case D :
-			tankLocationY += Y_STEP;
+			y += Y_STEP;
 			break;
 		case L :
-			tankLocationX -= X_STEP;
+			x -= X_STEP;
 			break;
 		case R :
-			tankLocationX += X_STEP;
+			x += X_STEP;
 			break;
 		case LU :
-			tankLocationX -= X_STEP;
-			tankLocationY -= Y_STEP;
+			x -= X_STEP;
+			y -= Y_STEP;
 			break;
 		case RU :
-			tankLocationX += X_STEP;
-			tankLocationY -= Y_STEP;
+			x += X_STEP;
+			y -= Y_STEP;
 			break;
 		case LD :
-			tankLocationX -= X_STEP;
-			tankLocationY += Y_STEP;
+			x -= X_STEP;
+			y += Y_STEP;
 			break;
 		case RD :
-			tankLocationX += X_STEP;
-			tankLocationY += Y_STEP;
+			x += X_STEP;
+			y += Y_STEP;
 			break;
 		case STOP :
 			break;
 		}
 		
-		if(tankLocationX < 0) tankLocationX = 0;
-		if(tankLocationX > TankClient.GAME_WIDTH - Tank.TANK_SIZE) tankLocationX = TankClient.GAME_WIDTH - Tank.TANK_SIZE;
-		if(tankLocationY < 30) tankLocationY = 30;
-		if(tankLocationY > TankClient.GAME_HEIGHT - Tank.TANK_SIZE) tankLocationY = TankClient.GAME_HEIGHT - Tank.TANK_SIZE;
+		if(x < 0) x = 0;
+		if(x > TankClient.GAME_WIDTH - Tank.TANK_SIZE) x = TankClient.GAME_WIDTH - Tank.TANK_SIZE;
+		if(y < 30) y = 30;
+		if(y > TankClient.GAME_HEIGHT - Tank.TANK_SIZE) y = TankClient.GAME_HEIGHT - Tank.TANK_SIZE;
 		/*下面给ptDirection赋值的代码加在move()方法里面的原因：
 		1.move方法不是在主线程调用，是在重画线程里面调用
 		2.重画线程调用的时候，每次重画之间间隔100ms
@@ -210,35 +222,35 @@ public class Tank {
 	public void drawPT(Graphics g) {
 		switch(ptDirection) {
 		case U :
-			g.drawLine(tankLocationX+TANK_SIZE/2, tankLocationY+TANK_SIZE/2, tankLocationX+TANK_SIZE/2, tankLocationY);
+			g.drawLine(x+TANK_SIZE/2, y+TANK_SIZE/2, x+TANK_SIZE/2, y);
 			break;
 		case D :
-			g.drawLine(tankLocationX+TANK_SIZE/2, tankLocationY+TANK_SIZE/2, tankLocationX+TANK_SIZE/2, tankLocationY+TANK_SIZE);
+			g.drawLine(x+TANK_SIZE/2, y+TANK_SIZE/2, x+TANK_SIZE/2, y+TANK_SIZE);
 			break;
 		case L :
-			g.drawLine(tankLocationX+TANK_SIZE/2, tankLocationY+TANK_SIZE/2, tankLocationX, tankLocationY+TANK_SIZE/2);
+			g.drawLine(x+TANK_SIZE/2, y+TANK_SIZE/2, x, y+TANK_SIZE/2);
 			break;
 		case R :
-			g.drawLine(tankLocationX+TANK_SIZE/2, tankLocationY+TANK_SIZE/2, tankLocationX+TANK_SIZE, tankLocationY+TANK_SIZE/2);
+			g.drawLine(x+TANK_SIZE/2, y+TANK_SIZE/2, x+TANK_SIZE, y+TANK_SIZE/2);
 			break;
 		case LU :
-			g.drawLine(tankLocationX+TANK_SIZE/2, tankLocationY+TANK_SIZE/2, tankLocationX, tankLocationY);
+			g.drawLine(x+TANK_SIZE/2, y+TANK_SIZE/2, x, y);
 			break;
 		case RU :
-			g.drawLine(tankLocationX+TANK_SIZE/2, tankLocationY+TANK_SIZE/2, tankLocationX+TANK_SIZE, tankLocationY);
+			g.drawLine(x+TANK_SIZE/2, y+TANK_SIZE/2, x+TANK_SIZE, y);
 			break;
 		case LD :
-			g.drawLine(tankLocationX+TANK_SIZE/2, tankLocationY+TANK_SIZE/2, tankLocationX, tankLocationY+TANK_SIZE);
+			g.drawLine(x+TANK_SIZE/2, y+TANK_SIZE/2, x, y+TANK_SIZE);
 			break;
 		case RD :
-			g.drawLine(tankLocationX+TANK_SIZE/2, tankLocationY+TANK_SIZE/2, tankLocationX+TANK_SIZE, tankLocationY+TANK_SIZE);
+			g.drawLine(x+TANK_SIZE/2, y+TANK_SIZE/2, x+TANK_SIZE, y+TANK_SIZE);
 			break;
 		}
 	}
 	
 	//获取Tank的外包裹矩形
 	public Rectangle getRect() {
-		return new Rectangle(tankLocationX, tankLocationY, TANK_SIZE, TANK_SIZE);
+		return new Rectangle(x, y, TANK_SIZE, TANK_SIZE);
 	}
 	
 	
