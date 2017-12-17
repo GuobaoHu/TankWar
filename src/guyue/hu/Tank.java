@@ -9,6 +9,7 @@ public class Tank {
 	public static final int X_STEP = 5;
 	public static final int Y_STEP = 5;
 	
+	private int id;
 	private int tankLocationX;
 	private int tankLocationY;
 	private Direction direction = Direction.STOP;
@@ -20,6 +21,14 @@ public class Tank {
 	private static Random random = new Random();//随机数产生器，这种比Math类里面的要好，可以产生int类型
 	private int step = 5 + random.nextInt(15);
 	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public boolean isGood() {
 		return good;
 	}
@@ -62,6 +71,7 @@ public class Tank {
 			}
 			g.fillOval(tankLocationX, tankLocationY, TANK_SIZE, TANK_SIZE);
 			g.setColor(defaultColor);
+			g.drawString("id:" + id, tankLocationX, tankLocationY - 10);
 			this.drawPT(g);
 			this.move();
 		}

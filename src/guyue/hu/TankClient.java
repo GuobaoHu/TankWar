@@ -22,12 +22,16 @@ public class TankClient extends Frame {
 	private List<Bullet> bullets = new ArrayList<Bullet>();
 	private List<Boom> booms = new ArrayList<Boom>();
 	private static Random random = new Random();
-	private NetClient nc = new NetClient();
+	private NetClient nc = new NetClient(this);
 	
 	public static void main(String[] args) {
 		new TankClient().launch();
 	}
 	
+	public Tank getMyTank() {
+		return myTank;
+	}
+
 	public java.util.List<Bullet> getBullets() {
 		return bullets;
 	}
