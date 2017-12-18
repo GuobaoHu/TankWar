@@ -36,4 +36,18 @@ public class TankMsg {
 		}
 		//end
 	}
+
+	public void parse(DataInputStream dis) {
+		try {
+			int id = dis.readInt();
+			int x = dis.readInt();
+			int y = dis.readInt();
+			Direction dir = Direction.values()[dis.readInt()];
+			boolean good = dis.readBoolean();
+System.out.println("id:" + id + "-x:" + x + "-y:" + y + "-dir:" + dir + "-good:" + good);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
 }

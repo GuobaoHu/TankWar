@@ -64,11 +64,20 @@ public class TankServer {
 		@Override
 		public void run() {
 			try {
+				//begin 接收客户端数据
 				ds = new DatagramSocket(UDP_PORT);
 				while(ds != null) {
 					DatagramPacket dp = new DatagramPacket(buf, buf.length);
 					ds.receive(dp);
 System.out.println("server has received a DatagramPacket!");
+				//end
+				//begin 向每个客户端发送数据
+					for(int i=0; i<clients.size(); i++) {
+						Client c = clients.get(i);
+						dp.setSocketAddress(new InetSocketAddress(c.getIp(), c.getUdpPort()));
+						ds.send(dp);
+					}
+				//end
 				}
 			} catch (SocketException e) {
 				e.printStackTrace();
@@ -87,6 +96,23 @@ System.out.println("server has received a DatagramPacket!");
 			this.ip = ip;
 			this.udpPort = udpPort;
 		}
+
+		public String getIp() {
+			return ip;
+		}
+
+		public void setIp(String ip) {
+			this.ip = ip;
+		}
+
+		public int getUdpPort() {
+			return udpPort;
+		}
+
+		public void setUdpPort(int udpPort) {
+			this.udpPort = udpPort;
+		}
+		
 	}
 
 }

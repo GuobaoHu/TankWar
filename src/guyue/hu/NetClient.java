@@ -9,6 +9,7 @@ public class NetClient {
 	private Socket s = null;
 	private TankClient tc;
 	private DatagramSocket ds;
+	private TankMsg msg;
 	/**
 	 * 新加入一辆tank，则向Server发送tank的相关信息
 	 * 
@@ -17,6 +18,7 @@ public class NetClient {
 	public NetClient(TankClient tc) {
 		 udpPort = UDP_PORT_START ++;
 		 this.tc = tc;
+		 this.msg = new TankMsg(tc.getMyTank());
 		try {
 			ds = new DatagramSocket(udpPort);
 		} catch (SocketException e) {
@@ -26,6 +28,9 @@ public class NetClient {
 	}
 
 	public void connect(String host, int port) {
+		//begin 连接上之后起UDP接收数据线程
+		new Thread(new ThreadRcv()).start();
+		//end
 		//begin 握手机制，向Server端发送udp端口号，并接收Server端分配的独一ID
 		try {
 			s = new Socket(host, port);
@@ -53,13 +58,35 @@ System.out.println("Connect server! server give me an ID:" + id);
 		//end
 		
 		//begin 通过UDP发送连接的Tank相关数据
-		TankMsg msg = new TankMsg(tc.getMyTank());
 		sendMsg(msg);
 		//end
 	}
 
 	public void sendMsg(TankMsg msg) {
 		msg.sendMsg(ds, "127.0.0.1", TankServer.UDP_PORT);
+	}
+	
+	public void receiveMsg(TankMsg msg, DataInputStream dis) {
+		msg.parse(dis);
+	}
+	
+	private class ThreadRcv implements Runnable {
+		@Override
+		public void run() {
+			while(true) {
+				byte[] buf = new byte[1024];
+				DatagramPacket dp = new DatagramPacket(buf, buf.length);
+				try {
+					ds.receive(dp);
+System.out.println("client has received a packet!");
+					DataInputStream dis = new DataInputStream(new ByteArrayInputStream(buf, 0, dp.getLength()));
+					receiveMsg(msg, dis);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
 	}
 	
 }
