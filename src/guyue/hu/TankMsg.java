@@ -5,9 +5,11 @@ import java.net.*;
 
 public class TankMsg {
 	private Tank tank;
+	private TankClient tc;
 
-	public TankMsg(Tank tank) {
+	public TankMsg(Tank tank, TankClient tc) {
 		this.tank = tank;
+		this.tc = tc;
 	}
 	
 	public void sendMsg(DatagramSocket ds, String ip, int port) {
@@ -40,11 +42,19 @@ public class TankMsg {
 	public void parse(DataInputStream dis) {
 		try {
 			int id = dis.readInt();
+			if(id == tc.getMyTank().getId()) {
+				return;
+			}
 			int x = dis.readInt();
 			int y = dis.readInt();
 			Direction dir = Direction.values()[dis.readInt()];
 			boolean good = dis.readBoolean();
-System.out.println("id:" + id + "-x:" + x + "-y:" + y + "-dir:" + dir + "-good:" + good);
+			//begin 基于接收到的数据新建一辆坦克,并加入到tc的enemytanks中
+			Tank t = new Tank(x, y, good, tc);
+			t.setDirection(dir);
+			t.setId(id);
+			tc.getEnemyTanks().add(t);
+			//end
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

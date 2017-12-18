@@ -4,7 +4,7 @@ import java.io.*;
 import java.net.*;
 
 public class NetClient {
-	private static int UDP_PORT_START = 11000;
+	private static int UDP_PORT_START = 11001;
 	private int udpPort;
 	private Socket s = null;
 	private TankClient tc;
@@ -18,7 +18,7 @@ public class NetClient {
 	public NetClient(TankClient tc) {
 		 udpPort = UDP_PORT_START ++;
 		 this.tc = tc;
-		 this.msg = new TankMsg(tc.getMyTank());
+		 this.msg = new TankMsg(tc.getMyTank(), tc);
 		try {
 			ds = new DatagramSocket(udpPort);
 		} catch (SocketException e) {

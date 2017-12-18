@@ -10,7 +10,7 @@ public class TankServer {
 	 * 给每个客户端独一无二的ID，可以使用java.util.UUID
 	 */
 	private static int id = 100;
-	public static final int TCP_PORT = 10000;
+	public static final int TCP_PORT = 20000;
 	public static final int UDP_PORT = 8888;
 	private List<Client> clients = new ArrayList<>();
 
