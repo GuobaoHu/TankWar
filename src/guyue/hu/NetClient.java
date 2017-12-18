@@ -4,12 +4,12 @@ import java.io.*;
 import java.net.*;
 
 public class NetClient {
-	private static int UDP_PORT_START = 11001;
+	private static int UDP_PORT_START = 11003;
 	private int udpPort;
 	private Socket s = null;
 	private TankClient tc;
 	private DatagramSocket ds;
-	private TankMsg msg;
+	private TankNewMsg msg;
 	/**
 	 * 新加入一辆tank，则向Server发送tank的相关信息
 	 * 
@@ -18,14 +18,14 @@ public class NetClient {
 	public NetClient(TankClient tc) {
 		 udpPort = UDP_PORT_START ++;
 		 this.tc = tc;
-		 this.msg = new TankMsg(tc.getMyTank(), tc);
+		 this.msg = new TankNewMsg(tc);
 		try {
 			ds = new DatagramSocket(udpPort);
 		} catch (SocketException e) {
 			e.printStackTrace();
 		}
-		
 	}
+
 
 	public void connect(String host, int port) {
 		//begin 连接上之后起UDP接收数据线程
@@ -62,29 +62,37 @@ System.out.println("Connect server! server give me an ID:" + id);
 		//end
 	}
 
-	public void sendMsg(TankMsg msg) {
+	public void sendMsg(TankNewMsg msg) {
 		msg.sendMsg(ds, "127.0.0.1", TankServer.UDP_PORT);
 	}
 	
-	public void receiveMsg(TankMsg msg, DataInputStream dis) {
-		msg.parse(dis);
-	}
-	
 	private class ThreadRcv implements Runnable {
+		byte[] buf = new byte[1024];
+		
 		@Override
 		public void run() {
 			while(true) {
-				byte[] buf = new byte[1024];
+				
 				DatagramPacket dp = new DatagramPacket(buf, buf.length);
 				try {
 					ds.receive(dp);
-System.out.println("client has received a packet!");
-					DataInputStream dis = new DataInputStream(new ByteArrayInputStream(buf, 0, dp.getLength()));
-					receiveMsg(msg, dis);
+					//注意该写法
+					ThreadRcv.this.parse(dp);
+					
+					
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 			}
+		}
+		
+		public void parse(DatagramPacket dp) {
+			DataInputStream dis = new DataInputStream(new ByteArrayInputStream(buf, 0, dp.getLength()));
+			/**
+			 * 此处添加基于dis的相关解析功能
+			 * 
+			 * 
+			 */
 		}
 		
 	}

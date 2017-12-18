@@ -3,12 +3,11 @@ package guyue.hu;
 import java.io.*;
 import java.net.*;
 
-public class TankMsg {
-	private Tank tank;
+public class TankNewMsg implements Message {
 	private TankClient tc;
+	private int msgType = Message.MSG_TANK_NEW;
 
-	public TankMsg(Tank tank, TankClient tc) {
-		this.tank = tank;
+	public TankNewMsg(TankClient tc) {
 		this.tc = tc;
 	}
 	
@@ -17,11 +16,11 @@ public class TankMsg {
 		DataOutputStream dos = new DataOutputStream(baos);
 		//begin Ð´Êý¾Ý
 		try {
-			dos.writeInt(tank.getId());
-			dos.writeInt(tank.getX());
-			dos.writeInt(tank.getY());
-			dos.writeInt(tank.getDirection().ordinal());
-			dos.writeBoolean(tank.isGood());
+			dos.writeInt(tc.getMyTank().getId());
+			dos.writeInt(tc.getMyTank().getX());
+			dos.writeInt(tc.getMyTank().getY());
+			dos.writeInt(tc.getMyTank().getDirection().ordinal());
+			dos.writeBoolean(tc.getMyTank().isGood());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
