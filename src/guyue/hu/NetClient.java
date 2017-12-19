@@ -4,12 +4,11 @@ import java.io.*;
 import java.net.*;
 
 public class NetClient {
-	private static int UDP_PORT_START = 11003;
+	private static int UDP_PORT_START = 11010;
 	private int udpPort;
 	private Socket s = null;
 	private TankClient tc;
 	private DatagramSocket ds;
-	private TankNewMsg msg;
 	/**
 	 * 新加入一辆tank，则向Server发送tank的相关信息
 	 * 
@@ -18,12 +17,21 @@ public class NetClient {
 	public NetClient(TankClient tc) {
 		 udpPort = UDP_PORT_START ++;
 		 this.tc = tc;
-		 this.msg = new TankNewMsg(tc);
 		try {
 			ds = new DatagramSocket(udpPort);
 		} catch (SocketException e) {
 			e.printStackTrace();
 		}
+	}
+
+
+	public DatagramSocket getDs() {
+		return ds;
+	}
+
+
+	public void setDs(DatagramSocket ds) {
+		this.ds = ds;
 	}
 
 
@@ -58,11 +66,12 @@ System.out.println("Connect server! server give me an ID:" + id);
 		//end
 		
 		//begin 通过UDP发送连接的Tank相关数据
+		TankNewMsg msg = new TankNewMsg(tc);
 		sendMsg(msg);
 		//end
 	}
 
-	public void sendMsg(TankNewMsg msg) {
+	public void sendMsg(Message msg) {
 		msg.sendMsg(ds, "127.0.0.1", TankServer.UDP_PORT);
 	}
 	
@@ -78,8 +87,6 @@ System.out.println("Connect server! server give me an ID:" + id);
 					ds.receive(dp);
 					//注意该写法
 					ThreadRcv.this.parse(dp);
-					
-					
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -88,11 +95,21 @@ System.out.println("Connect server! server give me an ID:" + id);
 		
 		public void parse(DatagramPacket dp) {
 			DataInputStream dis = new DataInputStream(new ByteArrayInputStream(buf, 0, dp.getLength()));
-			/**
-			 * 此处添加基于dis的相关解析功能
-			 * 
-			 * 
-			 */
+			try {
+				int type = dis.readInt();
+				switch(type) {
+				case Message.MSG_TANK_NEW :
+					Message msg = new TankNewMsg(NetClient.this.tc);
+					msg.parse(dis);
+					break;
+				case Message.MSG_TANK_MOVE :
+					msg = new TankMoveMsg(tc);
+					msg.parse(dis);
+					break;
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		
 	}

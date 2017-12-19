@@ -28,6 +28,14 @@ public class TankClient extends Frame {
 		new TankClient().launch();
 	}
 	
+	public NetClient getNc() {
+		return nc;
+	}
+
+	public void setNc(NetClient nc) {
+		this.nc = nc;
+	}
+
 	public Tank getMyTank() {
 		return myTank;
 	}

@@ -138,6 +138,7 @@ public class Tank {
 	
 	//根据按键是否被按下确定坦克的移动方向
 	public void moveDirection() {
+		Direction prevDir = direction;
 		if(bU && !bD && !bL && !bR) {
 			direction = Direction.U;
 		} else if(!bU && bD && !bL && !bR) {
@@ -156,6 +157,10 @@ public class Tank {
 			direction = Direction.RD;
 		} else {
 			direction = Direction.STOP;
+		}
+		if(prevDir != direction) {
+			TankMoveMsg msg = new TankMoveMsg(id, direction);
+			tc.getNc().sendMsg(msg);
 		}
 	}
 	

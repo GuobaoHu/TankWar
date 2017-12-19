@@ -16,6 +16,7 @@ public class TankNewMsg implements Message {
 		DataOutputStream dos = new DataOutputStream(baos);
 		//begin Ð´Êý¾Ý
 		try {
+			dos.writeInt(msgType);
 			dos.writeInt(tc.getMyTank().getId());
 			dos.writeInt(tc.getMyTank().getX());
 			dos.writeInt(tc.getMyTank().getY());
