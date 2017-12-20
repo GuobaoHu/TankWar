@@ -45,15 +45,33 @@ public class TankNewMsg implements Message {
 			if(id == tc.getMyTank().getId()) {
 				return;
 			}
-			int x = dis.readInt();
-			int y = dis.readInt();
-			Direction dir = Direction.values()[dis.readInt()];
-			boolean good = dis.readBoolean();
-			//begin 基于接收到的数据新建一辆坦克,并加入到tc的enemytanks中
-			Tank t = new Tank(x, y, good, tc);
-			t.setDirection(dir);
-			t.setId(id);
-			tc.getEnemyTanks().add(t);
+			/**
+			 * enemyTanks里面是否已经有该ID，没有则说明发过来的newMsg本坦克还未收到过
+			 * 那么可以在new出msg对应的坦克之后，把本坦克的信息发出去给msg对应的坦克，让它也画出自己来
+			 */
+			boolean exist = false;
+			for(int i=0; i<tc.getEnemyTanks().size(); i++) {
+				Tank t = tc.getEnemyTanks().get(i);
+				if(t.getId() == id) {
+					exist = true;
+					break;
+				}
+			}
+			if(!exist) {
+				//没在enemyTanks里面也不是本客户端的主站坦克，那么把本客户端的主战坦克信息发出去
+				TankNewMsg msg = new TankNewMsg(tc);
+				tc.getNc().sendMsg(msg);
+				
+				int x = dis.readInt();
+				int y = dis.readInt();
+				Direction dir = Direction.values()[dis.readInt()];
+				boolean good = dis.readBoolean();
+				//begin 基于接收到的数据新建一辆坦克,并加入到tc的enemytanks中
+				Tank t = new Tank(x, y, good, tc);
+				t.setDirection(dir);
+				t.setId(id);
+				tc.getEnemyTanks().add(t);
+			}
 			//end
 		} catch (IOException e) {
 			e.printStackTrace();
