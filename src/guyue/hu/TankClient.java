@@ -23,6 +23,7 @@ public class TankClient extends Frame {
 	private List<Boom> booms = new ArrayList<Boom>();
 	private static Random random = new Random();
 	private NetClient nc = new NetClient(this);
+	private ConDialog conDlg;
 	
 	public static void main(String[] args) {
 		new TankClient().launch();
@@ -65,7 +66,7 @@ public class TankClient extends Frame {
 		});
 		this.addKeyListener(new KeyMonitor());
 		new Thread(new TankMove()).start();
-		nc.connect("127.0.0.1", TankServer.TCP_PORT);
+//		nc.connect("127.0.0.1", TankServer.TCP_PORT);
 //		this.addEnemy();
 		this.setVisible(true);
 	}
@@ -143,7 +144,12 @@ public class TankClient extends Frame {
 
 		@Override
 		public void keyPressed(KeyEvent e) {
-			myTank.keyPressed(e);
+			if(e.getKeyCode() == KeyEvent.VK_C) {
+				conDlg = new ConDialog();
+				conDlg.setVisible(true);
+			} else {
+				myTank.keyPressed(e);
+			}
 		}
 
 		@Override
@@ -153,8 +159,45 @@ public class TankClient extends Frame {
 		
 	}
 	
-	//连续移动相关代码
-	/*private enum Direction {
-		UP,DOWN,LEFT,RIGHT
-	}*/
+	private class ConDialog extends Dialog {
+		private TextField ipField = new TextField("127.0.0.1", 20);
+		private TextField portField = new TextField("" + TankServer.TCP_PORT, 5);
+		private TextField myUportField = new TextField("12000", 5);
+		private Button button = new Button("连接");
+		
+		public ConDialog() {
+			super(TankClient.this, true);
+			this.launch();
+		}
+		
+		public void launch() {
+			this.setLocation(200, 200);
+			this.setLayout(new FlowLayout());
+			this.add(new Label("Host IP:"));
+			this.add(ipField);
+			this.add(new Label("Host Port:"));
+			this.add(portField);
+			this.add(new Label("My UDP Port:"));
+			this.add(myUportField);
+			this.add(button);
+			this.addWindowListener(new WindowAdapter() {
+				@Override
+				public void windowClosing(WindowEvent e) {
+					ConDialog.this.setVisible(false);
+				}
+			});
+			button.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					String ip = ipField.getText().trim();
+					int hostPort = Integer.parseInt(portField.getText().trim());
+					int udpPort = Integer.parseInt(myUportField.getText().trim());
+					nc.setUdpPort(udpPort);
+					nc.connect(ip, hostPort);
+					ConDialog.this.setVisible(false);
+				}
+			});
+			this.pack();
+		}
+	}
 }

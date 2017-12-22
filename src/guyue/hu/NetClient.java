@@ -4,7 +4,6 @@ import java.io.*;
 import java.net.*;
 
 public class NetClient {
-	private static int UDP_PORT_START = 11018;
 	private int udpPort;
 	private Socket s = null;
 	private TankClient tc;
@@ -15,13 +14,18 @@ public class NetClient {
 	 * @param tc TankClient端
 	 */
 	public NetClient(TankClient tc) {
-		 udpPort = UDP_PORT_START ++;
 		 this.tc = tc;
-		try {
-			ds = new DatagramSocket(udpPort);
-		} catch (SocketException e) {
-			e.printStackTrace();
-		}
+		
+	}
+
+
+	public int getUdpPort() {
+		return udpPort;
+	}
+
+
+	public void setUdpPort(int udpPort) {
+		this.udpPort = udpPort;
 	}
 
 
@@ -36,6 +40,11 @@ public class NetClient {
 
 
 	public void connect(String host, int port) {
+		try {
+			ds = new DatagramSocket(udpPort);
+		} catch (SocketException e) {
+			e.printStackTrace();
+		}
 		//begin 连接上之后起UDP接收数据线程
 		new Thread(new ThreadRcv()).start();
 		//end
