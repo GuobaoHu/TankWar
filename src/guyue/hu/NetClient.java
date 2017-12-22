@@ -4,7 +4,7 @@ import java.io.*;
 import java.net.*;
 
 public class NetClient {
-	private static int UDP_PORT_START = 11011;
+	private static int UDP_PORT_START = 11018;
 	private int udpPort;
 	private Socket s = null;
 	private TankClient tc;

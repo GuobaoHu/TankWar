@@ -37,6 +37,14 @@ public class Tank {
 		return y;
 	}
 
+	public void setX(int x) {
+		this.x = x;
+	}
+
+	public void setY(int y) {
+		this.y = y;
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -159,7 +167,7 @@ public class Tank {
 			direction = Direction.STOP;
 		}
 		if(prevDir != direction) {
-			TankMoveMsg msg = new TankMoveMsg(id, direction);
+			TankMoveMsg msg = new TankMoveMsg(id, x, y, direction);
 			tc.getNc().sendMsg(msg);
 		}
 	}
