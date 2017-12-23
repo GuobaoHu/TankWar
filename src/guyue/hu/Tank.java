@@ -82,6 +82,8 @@ public class Tank {
 		int y = this.y + TANK_SIZE/2 - Bullet.SIZE/2;
 		Bullet b = new Bullet(x, y, ptDirection, this.tc, good);
 		tc.getBullets().add(b);
+		BulletNewMsg msg = new BulletNewMsg(tc, b);
+		tc.getNc().sendMsg(msg);
 	}
 	
 	//画出坦克自身

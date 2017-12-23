@@ -115,6 +115,10 @@ System.out.println("Connect server! server give me an ID:" + id);
 					msg = new TankMoveMsg(tc);
 					msg.parse(dis);
 					break;
+				case Message.MSG_BULLET_NEW :
+					msg = new BulletNewMsg(tc);
+					msg.parse(dis);
+					break;
 				}
 			} catch (IOException e) {
 				e.printStackTrace();

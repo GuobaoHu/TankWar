@@ -11,6 +11,7 @@ import java.net.DatagramSocket;
 public interface Message {
 	public static final int MSG_TANK_NEW = 1;
 	public static final int MSG_TANK_MOVE = 2;
+	public static final int MSG_BULLET_NEW = 3;
 	
 	public void sendMsg(DatagramSocket ds, String ip, int port);
 	
