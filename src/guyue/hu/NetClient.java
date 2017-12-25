@@ -8,6 +8,7 @@ public class NetClient {
 	private Socket s = null;
 	private TankClient tc;
 	private DatagramSocket ds;
+	private String ip;//服务器端IP
 	/**
 	 * 新加入一辆tank，则向Server发送tank的相关信息
 	 * 
@@ -16,6 +17,16 @@ public class NetClient {
 	public NetClient(TankClient tc) {
 		 this.tc = tc;
 		
+	}
+
+
+	public String getIp() {
+		return ip;
+	}
+
+
+	public void setIp(String ip) {
+		this.ip = ip;
 	}
 
 
@@ -81,7 +92,7 @@ public class NetClient {
 	}
 
 	public void sendMsg(Message msg) {
-		msg.sendMsg(ds, "127.0.0.1", TankServer.UDP_PORT);
+		msg.sendMsg(ds, ip, TankServer.UDP_PORT);
 	}
 	
 	private class ThreadRcv implements Runnable {

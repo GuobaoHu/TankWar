@@ -193,6 +193,7 @@ public class TankClient extends Frame {
 					int hostPort = Integer.parseInt(portField.getText().trim());
 					int udpPort = Integer.parseInt(myUportField.getText().trim());
 					nc.setUdpPort(udpPort);
+					nc.setIp(ip);
 					nc.connect(ip, hostPort);
 					ConDialog.this.setVisible(false);
 				}
