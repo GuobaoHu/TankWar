@@ -57,6 +57,10 @@ public class Tank {
 		return good;
 	}
 
+	public void setGood(boolean good) {
+		this.good = good;
+	}
+
 	public boolean isLive() {
 		return live;
 	}
@@ -128,7 +132,9 @@ public class Tank {
 		int keyValue = e.getKeyCode();
 		switch (keyValue) {
 		case KeyEvent.VK_1 :
-			this.fire();
+			if(live) {
+				this.fire();
+			}
 			break;
 		case KeyEvent.VK_UP:
 			bU = false;
@@ -222,7 +228,7 @@ public class Tank {
 		if(direction != Direction.STOP) {
 			ptDirection = direction;
 		}
-		if(!good) {
+		/*if(!good) {
 			Direction[] directions = Direction.values();
 			if(step == 0) {
 				step = 5 + random.nextInt(15);
@@ -233,7 +239,7 @@ public class Tank {
 				this.fire();
 			}
 			step --;
-		}
+		}*/
 		
 	}
 	

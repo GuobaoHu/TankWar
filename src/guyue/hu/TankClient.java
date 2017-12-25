@@ -87,7 +87,7 @@ public class TankClient extends Frame {
 		
 		for(int i=0; i<bullets.size(); i++) {
 			Bullet b = bullets.get(i);
-			if(!b.hitTanks(enemyTanks) && !b.hitTank(myTank)) {
+			if(!b.hitTank(myTank)) {
 				bullets.get(i).draw(g);
 			}
 		}

@@ -10,21 +10,20 @@ import java.net.InetSocketAddress;
 
 /**
  * @author guyue
- * @date 2017年12月23日 下午9:04:51
+ * @date 2017年12月25日 下午5:52:59
  * @class describ:
  */
-public class BulletNewMsg implements Message {
-	private int msgType = Message.MSG_BULLET_NEW;
+public class BulletDeadMsg implements Message {
+	private int msgType = Message.MSG_BULLET_DEAD;
 	private TankClient tc;
-	private Bullet bullet;
+	private Bullet b;
 	
-	public BulletNewMsg(TankClient tc) {
-		this.tc = tc;
+	public BulletDeadMsg(Bullet b) {
+		this.b = b;
 	}
-	
-	public BulletNewMsg(TankClient tc, Bullet bullet) {
-		this(tc);
-		this.bullet = bullet;
+
+	public BulletDeadMsg(TankClient tc) {
+		this.tc = tc;
 	}
 
 	@Override
@@ -34,12 +33,8 @@ public class BulletNewMsg implements Message {
 		//begin 写数据
 		try {
 			dos.writeInt(msgType);
-			dos.writeInt(bullet.getTankId());
-			dos.writeInt(bullet.getUid());
-			dos.writeInt(bullet.getX());
-			dos.writeInt(bullet.getY());
-			dos.writeInt(bullet.getDirection().ordinal());
-			dos.writeBoolean(bullet.isGood());
+			dos.writeInt(b.getTankId());
+			dos.writeInt(b.getUid());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -60,20 +55,19 @@ public class BulletNewMsg implements Message {
 	@Override
 	public void parse(DataInputStream dis) {
 		try {
-			int id = dis.readInt();
-			if(id == tc.getMyTank().getId()) {
-				return;
-			}
+			int tankId = dis.readInt();
 			int uid = dis.readInt();			
-			int x = dis.readInt();
-			int y = dis.readInt();
-			Direction dir = Direction.values()[dis.readInt()];
-			boolean good = dis.readBoolean();
-			Bullet bullet = new Bullet(x, y, dir, tc, good, id, uid);
-			tc.getBullets().add(bullet);
+			for(int i=0; i<tc.getBullets().size(); i++) {
+				Bullet b = tc.getBullets().get(i);
+				if(b.getTankId() == tankId && b.getUid() == uid) {
+					tc.getBooms().add(new Boom(b.getX(), b.getY(), tc));
+					tc.getBullets().remove(b);
+				}
+			}
 			//end
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
+
 }

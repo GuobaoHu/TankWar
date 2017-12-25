@@ -56,8 +56,8 @@ public class NetClient {
 			DataInputStream dis = new DataInputStream(s.getInputStream());
 			int id = dis.readInt();
 			tc.getMyTank().setId(id);
-System.out.println("Connect server! server give me an ID:" + id);
-			
+			if(id % 2 == 0) tc.getMyTank().setGood(false);
+			else tc.getMyTank().setGood(true);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -117,6 +117,14 @@ System.out.println("Connect server! server give me an ID:" + id);
 					break;
 				case Message.MSG_BULLET_NEW :
 					msg = new BulletNewMsg(tc);
+					msg.parse(dis);
+					break;
+				case Message.MSG_TANK_DEAD :
+					msg = new TankDeadMsg(tc);
+					msg.parse(dis);
+					break;
+				case Message.MSG_BULLET_DEAD :
+					msg = new BulletDeadMsg(tc);
 					msg.parse(dis);
 					break;
 				}

@@ -10,21 +10,20 @@ import java.net.InetSocketAddress;
 
 /**
  * @author guyue
- * @date 2017年12月23日 下午9:04:51
+ * @date 2017年12月25日 下午4:16:33
  * @class describ:
  */
-public class BulletNewMsg implements Message {
-	private int msgType = Message.MSG_BULLET_NEW;
+public class TankDeadMsg implements Message {
+	private int msgType = Message.MSG_TANK_DEAD;
 	private TankClient tc;
-	private Bullet bullet;
+	private Tank t;
 	
-	public BulletNewMsg(TankClient tc) {
+	public TankDeadMsg(TankClient tc) {
 		this.tc = tc;
 	}
-	
-	public BulletNewMsg(TankClient tc, Bullet bullet) {
-		this(tc);
-		this.bullet = bullet;
+
+	public TankDeadMsg(Tank t) {
+		this.t = t;
 	}
 
 	@Override
@@ -34,12 +33,7 @@ public class BulletNewMsg implements Message {
 		//begin 写数据
 		try {
 			dos.writeInt(msgType);
-			dos.writeInt(bullet.getTankId());
-			dos.writeInt(bullet.getUid());
-			dos.writeInt(bullet.getX());
-			dos.writeInt(bullet.getY());
-			dos.writeInt(bullet.getDirection().ordinal());
-			dos.writeBoolean(bullet.isGood());
+			dos.writeInt(t.getId());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -64,16 +58,18 @@ public class BulletNewMsg implements Message {
 			if(id == tc.getMyTank().getId()) {
 				return;
 			}
-			int uid = dis.readInt();			
-			int x = dis.readInt();
-			int y = dis.readInt();
-			Direction dir = Direction.values()[dis.readInt()];
-			boolean good = dis.readBoolean();
-			Bullet bullet = new Bullet(x, y, dir, tc, good, id, uid);
-			tc.getBullets().add(bullet);
+						
+			for(int i=0; i<tc.getEnemyTanks().size(); i++) {
+				Tank t = tc.getEnemyTanks().get(i);
+				if(t.getId() == id) {
+					t.setLive(false);
+					tc.getEnemyTanks().remove(t);
+				}
+			}
 			//end
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
+
 }

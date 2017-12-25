@@ -12,7 +12,26 @@ public class Bullet {
 	private TankClient tc;
 	private boolean good = true;
 	private static int kill = 0;
+	private int tankId;
+	private static int ID = 1;
+	private int uid;
 	
+	public int getUid() {
+		return uid;
+	}
+
+	public void setUid(int uid) {
+		this.uid = uid;
+	}
+
+	public int getTankId() {
+		return tankId;
+	}
+
+	public void setTankId(int tankId) {
+		this.tankId = tankId;
+	}
+
 	public static int getKill() {
 		return kill;
 	}
@@ -59,8 +78,18 @@ public class Bullet {
 		this(locationX, locationY, direction);
 		this.good = good;
 		this.tc = tc;
+		this.tankId = tc.getMyTank().getId();
+		this.uid = ID ++;
 	}
 
+	public Bullet(int locationX, int locationY, Direction direction, TankClient tc, boolean good, int tankId, int uid) {
+		this(locationX, locationY, direction);
+		this.good = good;
+		this.tc = tc;
+		this.tankId = tankId;
+		this.uid = uid;
+	}
+	
 	public void draw(Graphics g) {
 		Color c = g.getColor();
 		if(good) {
@@ -123,6 +152,10 @@ public class Bullet {
 	public boolean hitTank(Tank t) {
 		if(this.getRect().intersects(t.getRect()) && t.isLive() && (this.good != t.isGood())) {
 			t.setLive(false);
+			TankDeadMsg msg = new TankDeadMsg(t);
+			BulletDeadMsg bMsg = new BulletDeadMsg(this);
+			tc.getNc().sendMsg(msg);
+			tc.getNc().sendMsg(bMsg);
 			tc.getBooms().add(new Boom(x, y, tc));
 			tc.getBullets().remove(this);
 			return true;

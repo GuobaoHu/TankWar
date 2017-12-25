@@ -12,6 +12,8 @@ public interface Message {
 	public static final int MSG_TANK_NEW = 1;
 	public static final int MSG_TANK_MOVE = 2;
 	public static final int MSG_BULLET_NEW = 3;
+	public static final int MSG_TANK_DEAD = 4;
+	public static final int MSG_BULLET_DEAD = 5;
 	
 	public void sendMsg(DatagramSocket ds, String ip, int port);
 	
